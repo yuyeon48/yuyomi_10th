@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List </title>
+  <style>
+  
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      background-color: #fdfdfd; 
+      padding: 50px 20px; 
+      font-family: 'Pretendard', -apple-system, sans-serif; 
+      display: flex; 
+      justify-content: center; 
+    }
+
+    .todo-container { width: 100%; max-width: 500px; }
+    .todo__title { font-size: 32px; font-weight: 800; margin-bottom: 30px; text-align: center; }
+    .todo__title span { color: #ff6b4a; }
+
+    .todo__input-box { margin-bottom: 40px; }
+    .todo__input {
+      width: 100%; padding: 15px 20px; border: 3px solid #222; border-radius: 20px;
+      font-size: 16px; font-weight: 600; outline: none; box-shadow: 6px 6px 0px #222;
+      transition: transform 0.1s;
+    }
+    .todo__input:focus { transform: translate(-2px, -2px); box-shadow: 8px 8px 0px #222; }
+
+
+    .todo__section { margin-bottom: 40px; }
+    .todo__subtitle { font-size: 18px; font-weight: 800; margin-bottom: 15px; color: #333; }
+    .todo__list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+
+    .todo__item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 20px; background: #fff; border: 2px solid #222; border-radius: 15px;
+      box-shadow: 4px 4px 0px #222; animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .todo__text { font-weight: 600; font-size: 15px; color: #333; flex: 1; margin-right: 10px; }
+    
+    .todo__actions { display: flex; gap: 8px; }
+    .btn { padding: 6px 12px; border: 2px solid #222; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 12px; transition: all 0.1s; }
+    .btn:active { transform: translate(2px, 2px); box-shadow: none; }
+    
+    .btn--complete { background-color: #ff6b4a; color: #fff; }
+    .btn--delete { background-color: #fff; color: #222; }
+
+ 
+    .done { background-color: #f9f9f9; border-color: #ddd; box-shadow: 2px 2px 0px #ddd; }
+    .done .todo__text { text-decoration: line-through; color: #aaa; }
+    .done .btn--complete { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="todo-container">
+    <h1 class="todo__title">오늘의 <span>할 일</span></h1>
+
+    <div class="todo__input-box">
+      <input type="text" class="todo__input" id="todo-input" placeholder="할 일을 적고 엔터를 누르세요!">
+    </div>
+
+    <div class="todo__section">
+      <h2 class="todo__subtitle">해야 할 일</h2>
+      <ul class="todo__list" id="todo-list-active"></ul>
+    </div>
+
+    <div class="todo__section">
+      <h2 class="todo__subtitle">해낸 일</h2>
+      <ul class="todo__list" id="todo-list-done"></ul>
+    </div>
+  </div>
+
+  <script>
+ 
+    const input = document.getElementById('todo-input');
+    const activeList = document.getElementById('todo-list-active');
+    const doneList = document.getElementById('todo-list-done');
+
+  
+    window.onload = () => {
+      loadTodos();
+    };
+
+  
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const text = input.value.trim();
+        if (text !== "") {
+          addTodo(text, false);
+          input.value = "";
+          saveTodos();
+        }
+      }
+    });
+
+    
+    function addTodo(text, isDone) {
+      const li = document.createElement('li');
+      li.className = 'todo__item';
+      if (isDone) li.classList.add('done');
+      
+      li.innerHTML = `
+        <span class="todo__text">${text}</span>
+        <div class="todo__actions">
+          <button class="btn btn--complete" onclick="completeTodo(this)">완료</button>
+          <button class="btn btn--delete" onclick="deleteTodo(this)">삭제</button>
+        </div>
+      `;
+      
+      if (isDone) doneList.appendChild(li);
+      else activeList.appendChild(li);
+    }
+
+  
+    function completeTodo(btn) {
+      const item = btn.closest('.todo__item');
+      item.classList.add('done');
+      doneList.appendChild(item);
+      saveTodos();
+    }
+
+ 
+    function deleteTodo(btn) {
+      if (confirm('정말 삭제할까요?')) {
+        const item = btn.closest('.todo__item');
+        item.remove();
+        saveTodos();
+      }
+    }
+
+    
+    function saveTodos() {
+      const todos = [];
+      document.querySelectorAll('.todo__item').forEach(item => {
+        todos.push({
+          text: item.querySelector('.todo__text').innerText,
+          isDone: item.classList.contains('done')
+        });
+      });
+      localStorage.setItem('my_task_data_v1', JSON.stringify(todos));
+    }
+
+
+    function loadTodos() {
+      const saved = localStorage.getItem('my_task_data_v1');
+      if (saved) {
+        const todos = JSON.parse(saved);
+        todos.forEach(todo => addTodo(todo.text, todo.isDone));
+      }
+    }
+  </script>
+
+</body>
+</html>

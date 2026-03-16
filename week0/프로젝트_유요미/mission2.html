@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>복합 레이아웃 실습</title>
+  <style>
+    /* 기본 리셋 */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 1. 전체 그리드 설정 */
+    .grid-container {
+      display: grid;
+      width: 100%;
+      height: 100vh;
+      /* 가로 4열, 세로 4행 구성 */
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 80px 300px 1fr 100px;
+      gap: 0; /* 이미지처럼 딱 붙게 설정 */
+    }
+
+    /* 공통 스타일: 글자 중앙 정렬 (Flex 활용) */
+    .grid-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+    }
+
+    /* 2. 각 영역 배치 */
+    .header {
+      background-color: #1a233a;
+      grid-column: 1 / 2; /* 1번째 칸 */
+    }
+
+    .menu {
+      background-color: #e55a5a;
+      grid-column: 2 / 5; /* 2~4번째 칸까지 차지 */
+    }
+
+    .hero {
+      background-color: #5d87c6;
+      grid-column: 1 / 5; /* 가로 전체 차지 */
+    }
+
+    .main {
+      background-color: #2b364b;
+      grid-column: 1 / 3; /* 가로 절반 차지 */
+    }
+
+    /* 중간 흰색 공백 */
+    .empty {
+      background-color: #ffffff;
+      grid-column: 3 / 4;
+    }
+
+    /* 오른쪽 사이드 (Grid를 중첩하거나 행을 나눠서 배치) */
+    .side-area {
+      grid-column: 4 / 5;
+      display: grid;
+      grid-template-rows: 1fr 1fr; /* 이미지와 엑스트라를 1:1로 나눔 */
+    }
+
+    .image { background-color: #d1e6e9; color: #333; }
+    .extra { background-color: #72bc96; }
+
+    .banner {
+      background-color: #f6d87a;
+      grid-column: 1 / 5; /* 가로 전체 차지 */
+      color: #333;
+    }
+
+    /* 반응형: 화면이 작아지면 세로로 쌓기 */
+    @media (max-width: 768px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+      }
+      .header, .menu, .hero, .main, .empty, .side-area, .banner {
+        grid-column: 1 / 2;
+        height: 150px;
+      }
+      .empty { display: none; } /* 모바일에서 공백은 숨김 */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid-container">
+    <header class="grid-item header">HEADER</header>
+    <nav class="grid-item menu">MENU</nav>
+    <section class="grid-item hero">HERO</section>
+    
+    <article class="grid-item main">MAIN</article>
+    <div class="empty"></div> <div class="side-area">
+      <div class="grid-item image">IMAGE</div>
+      <div class="grid-item extra">EXTRA</div>
+    </div>
+    
+    <footer class="grid-item banner">BANNER</footer>
+  </div>
+
+</body>
+</html>
