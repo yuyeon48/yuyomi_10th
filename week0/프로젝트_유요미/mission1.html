@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aido</title>
+  <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      background-color: #fdfdfd; 
+      font-family: 'Pretendard', -apple-system, sans-serif;
+      color: #222;
+      line-height: 1.5;
+    }
+
+   
+    .header {
+      padding: 30px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar {
+      display: flex; justify-content: space-between; align-items: center;
+      background-color: #fff; padding: 10px 25px;
+      border: 3px solid #222; border-radius: 35px;
+      box-shadow: 6px 6px 0px #222; max-width: 1000px; margin: 0 auto;
+    }
+
+    .navbar__logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; }
+    .navbar__logo-img {
+      width: 38px; height: 38px; border-radius: 12px; border: 2.5px solid #222;
+      background: url('./\ -5.jpg') no-repeat center / cover orange;
+    }
+
+    .navbar__menu { display: flex; align-items: center; gap: 25px; list-style: none; }
+    .navbar__link { text-decoration: none; color: #666; font-weight: 600; font-size: 15px; }
+    .navbar__link--active { color: #ff6b4a; }
+
+    .navbar__lang {
+      display: flex; align-items: center; gap: 6px; padding: 4px 8px;
+      border: 2px solid #222; border-radius: 25px;
+    }
+    .navbar__lang-label { font-size: 13px; color: #999; font-weight: bold; }
+
+    .navbar__btn {
+      padding: 4px 12px; border: 2px solid #222; border-radius: 20px;
+      font-size: 12px; font-weight: bold; cursor: pointer; background: #fff; color: #999;
+    }
+    .navbar__btn--selected { background-color: #ff6b4a; color: #fff; }
+
+    .hero {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 60px 20px; text-align: center;
+    }
+
+    .hero__profile {
+      width: 120px; height: 120px; background: #fff;
+      border: 3px solid #222; border-radius: 25px;
+      box-shadow: 6px 6px 0px #222; padding: 10px; margin-bottom: 40px;
+    }
+    .hero__profile-img {
+      width: 100%; height: 100%; border-radius: 15px;
+      background: url('./\ -5.jpg') no-repeat center / cover orange;
+    }
+
+    .hero__title { font-size: 45px; font-weight: 800; margin-bottom: 25px; letter-spacing: -1px; }
+    .hero__title span { color: #ff6b4a; display: block; }
+
+    .hero__desc { font-size: 17px; color: #666; margin-bottom: 50px; line-height: 1.7; }
+
+    .hero__actions { display: flex; gap: 20px; justify-content: center; }
+
+    .btn-store {
+      display: flex; align-items: center; gap: 12px;
+      background: #fff; border: 3px solid #222; border-radius: 18px;
+      padding: 12px 28px; cursor: pointer; box-shadow: 5px 5px 0px #222;
+      text-decoration: none; color: #222; transition: transform 0.1s;
+    }
+    .btn-store:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0px #222; }
+
+    .btn-store__sub { font-size: 10px; color: #888; display: block; text-transform: uppercase; }
+    .btn-store__main { font-size: 18px; font-weight: 800; }
+
+    @media (max-width: 768px) {
+      .navbar { padding: 8px 15px; width: fit-content; }
+      .navbar__logo span, .navbar__link, .navbar__lang-label { display: none; }
+      
+      .hero__title { font-size: 30px; }
+      .hero__actions { flex-direction: column; width: 100%; max-width: 250px; }
+      .btn-store { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <nav class="navbar">
+      <div class="navbar__logo">
+        <div class="navbar__logo-img"></div>
+        <span>Aido</span>
+      </div>
+      <ul class="navbar__menu">
+        <li><a href="#" class="navbar__link" id="menu-friends">고양이 친구들</a></li>
+        <li><a href="#" class="navbar__link navbar__link--active" id="menu-download">앱 다운로드</a></li>
+        <li class="navbar__lang">
+          <span class="navbar__lang-label" id="lang-label">언어</span>
+          <button class="navbar__btn navbar__btn--selected" onclick="changeLang('ko', this)">KO</button>
+          <button class="navbar__btn" onclick="changeLang('en', this)">EN</button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <div class="hero__profile">
+      <div class="hero__profile-img"></div>
+    </div>
+
+    <h1 class="hero__title">
+      작심삼일은 이제 그만,<br>
+      <span id="hero-highlight">친구와 함께 매일 성취하세요</span>
+    </h1>
+
+    <p class="hero__desc" id="hero-desc">
+      혼자서는 미루던 일도, 친구와 함께라면 달라집니다.<br>
+      말로 쓰면 AI가 정리하고, 고양이 친구들이 매일 응원해줄 거예요.
+    </p>
+
+    <div class="hero__actions">
+      <a href="#" class="btn-store">
+        <div class="btn-store__text">
+          <span class="btn-store__sub">Download on the</span>
+          <span class="btn-store__main">App Store</span>
+        </div>
+      </a>
+      <a href="#" class="btn-store">
+        <div class="btn-store__text">
+          <span class="btn-store__sub">Get it on</span>
+          <span class="btn-store__main">Google Play</span>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <script>
+    const langData = {
+      ko: {
+        friends: "고양이 친구들",
+        download: "앱 다운로드",
+        label: "언어",
+        title: "친구와 함께 매일 성취하세요",
+        desc: "혼자서는 미루던 일도, 친구와 함께라면 달라집니다.<br>말로 쓰면 AI가 정리하고, 고양이 친구들이 매일 응원해줄 거예요."
+      },
+      en: {
+        friends: "Cat Friends",
+        download: "App Download",
+        label: "Lang",
+        title: "Achieve Every Day with Friends",
+        desc: "Things you put off alone change when you're with friends.<br>AI organizes your words, and cat friends will cheer you on every day."
+      }
+    };
+
+    function changeLang(lang, btnElement) {
+      document.querySelectorAll('.navbar__btn').forEach(btn => btn.classList.remove('navbar__btn--selected'));
+      btnElement.classList.add('navbar__btn--selected');
+
+      document.getElementById('menu-friends').innerText = langData[lang].friends;
+      document.getElementById('menu-download').innerText = langData[lang].download;
+      document.getElementById('lang-label').innerText = langData[lang].label;
+      document.getElementById('hero-highlight').innerText = langData[lang].title;
+      document.getElementById('hero-desc').innerHTML = langData[lang].desc;
+    }
+  </script>
+
+</body>
+</html>
